@@ -1,5 +1,6 @@
 import db from "../models/index";
 require('dotenv').config();
+import emailService from './emailService';
 
 let postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -10,6 +11,13 @@ let postBookAppointment = (data) => {
                     errMessage: 'Missing parameter'
                 })
             } else {
+                await emailService.sendSimpleEmail({
+                    receiverEmail: data.email,
+                    patientName: 'tfong',
+                    time: '8:00~9:00 CN 1/8/2021',
+                    doctorName: 'tminh',
+                    redirectLink: 'https://www.youtube.com/watch?v=TaJqxfMZMWs'
+                })
                 //upset patient
                 let user = await db.User.findOrCreate({
                     where: { email: data.email },
